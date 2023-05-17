@@ -1,4 +1,4 @@
-package com.bryanspitz.recipes
+package com.bryanspitz.recipes.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
