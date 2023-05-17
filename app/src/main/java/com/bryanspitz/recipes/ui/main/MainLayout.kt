@@ -22,12 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bryanspitz.recipes.R
+import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.ui.theme.RecipesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainLayout(
-    recipes: List<String>,
+    recipes: List<RecipeSummary>,
     onAdd: () -> Unit
 ) {
     val collapse = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -56,11 +57,9 @@ fun MainLayout(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = spacedBy(16.dp)
         ) {
-            itemsIndexed(recipes, { _, item -> item }) { index, item ->
+            itemsIndexed(recipes, { _, item -> item.id }) { index, item ->
                 RecipeCard(
-                    title = item,
-                    description = "This is the $item",
-                    imgUrl = "",
+                    data = item,
                     imageAtEnd = index % 2 == 0
                 )
             }
@@ -73,7 +72,26 @@ fun MainLayout(
 private fun PreviewMainLayout() {
     RecipesTheme {
         MainLayout(
-            recipes = listOf("Pflaumenkuchen", "Potatoes Romanoff", "Blueberry Pie"),
+            recipes = listOf(
+                RecipeSummary(
+                    id = "id0",
+                    title = "Pflaumenkuchen",
+                    description = "A traditional German plum cake.",
+                    imgUrl = ""
+                ),
+                RecipeSummary(
+                    id = "id1",
+                    title = "Potatoes Romanoff",
+                    description = "The potatoes of Russian royalty.",
+                    imgUrl = ""
+                ),
+                RecipeSummary(
+                    id = "id2",
+                    title = "Blueberry Pie",
+                    description = "Flaky crust with a decadent blueberry filling, or whatever.",
+                    imgUrl = ""
+                )
+            ),
             onAdd = {}
         )
     }

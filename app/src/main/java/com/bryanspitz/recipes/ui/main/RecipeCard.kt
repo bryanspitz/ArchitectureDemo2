@@ -16,45 +16,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.ui.theme.RecipesTheme
 
 @Composable
 fun RecipeCard(
     modifier: Modifier = Modifier,
-    title: String,
-    description: String,
-    imgUrl: String,
+    data: RecipeSummary,
     imageAtEnd: Boolean = true
 ) {
-    ElevatedCard(modifier = modifier) {
-        Row {
-            if (!imageAtEnd) {
-                Box(
+    with(data) {
+        ElevatedCard(modifier = modifier) {
+            Row {
+                if (!imageAtEnd) {
+                    Box(
+                        modifier = Modifier
+                            .weight(40f)
+                            .aspectRatio(1f)
+                            .background(Color.White)
+                    )
+                }
+                Column(
                     modifier = Modifier
-                        .weight(40f)
-                        .aspectRatio(1f)
-                        .background(Color.White)
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(60f),
-                verticalArrangement = spacedBy(8.dp)
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(text = description)
-            }
-            if (imageAtEnd) {
-                Box(
-                    modifier = Modifier
-                        .weight(40f)
-                        .aspectRatio(1f)
-                        .background(Color.White)
-                )
+                        .padding(12.dp)
+                        .weight(60f),
+                    verticalArrangement = spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(text = description)
+                }
+                if (imageAtEnd) {
+                    Box(
+                        modifier = Modifier
+                            .weight(40f)
+                            .aspectRatio(1f)
+                            .background(Color.White)
+                    )
+                }
             }
         }
     }
@@ -66,9 +67,12 @@ private fun PreviewRecipeCardRight() {
     RecipesTheme {
         RecipeCard(
             modifier = Modifier.fillMaxWidth(),
-            title = "Pflaumenkuchen",
-            description = "A traditional German plum cake.",
-            imgUrl = ""
+            data = RecipeSummary(
+                id = "id",
+                title = "Pflaumenkuchen",
+                description = "A traditional German plum cake.",
+                imgUrl = ""
+            )
         )
     }
 }
@@ -79,9 +83,12 @@ private fun PreviewRecipeCardLeft() {
     RecipesTheme {
         RecipeCard(
             modifier = Modifier.fillMaxWidth(),
-            title = "Pflaumenkuchen",
-            description = "A traditional German plum cake.",
-            imgUrl = "",
+            data = RecipeSummary(
+                id = "id",
+                title = "Pflaumenkuchen",
+                description = "A traditional German plum cake.",
+                imgUrl = ""
+            ),
             imageAtEnd = false
         )
     }
