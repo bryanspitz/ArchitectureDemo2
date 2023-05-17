@@ -15,3 +15,7 @@ interface AppComponent {
         fun create(): AppComponent
     }
 }
+
+interface AppComponentSource {
+    val appComponent: AppComponent
+}

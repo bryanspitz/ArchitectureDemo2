@@ -2,14 +2,14 @@ package com.bryanspitz.recipes.app
 
 import android.app.Application
 
-class RecipesApplication : Application() {
+class RecipesApplication : Application(), AppComponentSource {
 
-    lateinit var component: AppComponent
+    override lateinit var appComponent: AppComponent
         private set
 
     override fun onCreate() {
         super.onCreate()
 
-        component = DaggerAppComponent.factory().create()
+        appComponent = DaggerAppComponent.factory().create()
     }
 }
