@@ -1,5 +1,6 @@
 package com.bryanspitz.recipes.app
 
+import com.bryanspitz.recipes.repository.recipe.cache.RecipeCacheSource
 import dagger.Component
 import javax.inject.Scope
 
@@ -8,7 +9,7 @@ annotation class AppScope
 
 @AppScope
 @Component
-interface AppComponent {
+interface AppComponent : RecipeCacheSource {
 
     @Component.Factory
     interface Factory {

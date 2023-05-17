@@ -37,3 +37,7 @@ class RecipeCache @Inject constructor() {
         _data.value = mutator(_data.value)
     }
 }
+
+interface RecipeCacheSource {
+    fun recipeCache(): RecipeCache
+}
