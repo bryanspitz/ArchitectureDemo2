@@ -59,6 +59,9 @@ android {
                 useLegacyPackaging = true
             }
         }
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
 }
 
@@ -92,4 +95,8 @@ dependencies {
     def mockk_version = "1.13.3"
     testImplementation "io.mockk:mockk:$mockk_version"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
+
+    // Kotest
+    testImplementation 'io.kotest:kotest-runner-junit5:5.4.0'
+    testImplementation 'io.kotest:kotest-assertions-core:5.4.0'
 }
