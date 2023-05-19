@@ -10,30 +10,32 @@ import javax.inject.Inject
 class RecipeCache @Inject constructor() {
 
     private val _data = MutableStateFlow(
-        listOf(
-            RecipeSummary(
-                id = "id0",
-                title = "Pflaumenkuchen",
-                description = "A traditional German plum cake.",
-                imgUrl = ""
-            ),
-            RecipeSummary(
-                id = "id1",
-                title = "Potatoes Romanoff",
-                description = "The potatoes of Russian royalty.",
-                imgUrl = ""
-            ),
-            RecipeSummary(
-                id = "id2",
-                title = "Blueberry Pie",
-                description = "Flaky crust with a decadent blueberry filling, or whatever.",
-                imgUrl = ""
+        RecipeCacheData(
+            summaries = listOf(
+                RecipeSummary(
+                    id = "id0",
+                    title = "Pflaumenkuchen",
+                    description = "A traditional German plum cake.",
+                    imgUrl = ""
+                ),
+                RecipeSummary(
+                    id = "id1",
+                    title = "Potatoes Romanoff",
+                    description = "The potatoes of Russian royalty.",
+                    imgUrl = ""
+                ),
+                RecipeSummary(
+                    id = "id2",
+                    title = "Blueberry Pie",
+                    description = "Flaky crust with a decadent blueberry filling, or whatever.",
+                    imgUrl = ""
+                )
             )
         )
     )
-    val data: StateFlow<List<RecipeSummary>> = _data
+    val data: StateFlow<RecipeCacheData> = _data
 
-    fun mutate(mutator: (List<RecipeSummary>) -> List<RecipeSummary>) {
+    fun mutate(mutator: (RecipeCacheData) -> RecipeCacheData) {
         _data.value = mutator(_data.value)
     }
 }

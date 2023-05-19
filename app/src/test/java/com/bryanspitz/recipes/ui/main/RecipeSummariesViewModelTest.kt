@@ -6,19 +6,19 @@ import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.repository.recipe.GetRecipeSummaries
 import com.bryanspitz.recipes.testutils.collectAndTest
 import com.bryanspitz.recipes.testutils.latestValue
-import com.bryanspitz.recipes.testutils.returnsStateFlow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.jupiter.api.Assertions.*
 
 internal class RecipeSummariesViewModelTest : BehaviorSpec({
     val getRecipeSummaries: GetRecipeSummaries = mockk()
 
-    val data = every { getRecipeSummaries.get() }.returnsStateFlow(
+    every { getRecipeSummaries.getRecipeSummaries() } returns flowOf(
         listOf(
             RecipeSummary(
                 id = "b",

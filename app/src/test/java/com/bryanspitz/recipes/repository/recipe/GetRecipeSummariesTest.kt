@@ -2,6 +2,7 @@ package com.bryanspitz.recipes.repository.recipe
 
 import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.repository.recipe.cache.RecipeCache
+import com.bryanspitz.recipes.repository.recipe.cache.RecipeCacheData
 import com.bryanspitz.recipes.testutils.collectAndTest
 import com.bryanspitz.recipes.testutils.latestValue
 import com.bryanspitz.recipes.testutils.returnsStateFlow
@@ -16,10 +17,10 @@ internal class GetRecipeSummariesTest : BehaviorSpec({
 
     val get = GetRecipeSummaries(cache)
 
-    val data = every { cache.data }.returnsStateFlow(emptyList())
+    val data = every { cache.data }.returnsStateFlow(RecipeCacheData())
 
     Given("result is collected") {
-        get.get().collectAndTest {
+        get.getRecipeSummaries().collectAndTest {
 
             Then("emit initial cache value") {
                 it.latestValue.shouldBeEmpty()
@@ -34,7 +35,7 @@ internal class GetRecipeSummariesTest : BehaviorSpec({
                         imgUrl = ""
                     )
                 )
-                data.emit(value)
+                data.emit(RecipeCacheData(summaries = value))
 
                 Then("emit update") {
                     it.latestValue shouldBe value

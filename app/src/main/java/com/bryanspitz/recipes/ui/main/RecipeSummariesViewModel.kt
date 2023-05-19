@@ -20,7 +20,7 @@ class RecipeSummariesViewModel {
         getRecipeSummaries: GetRecipeSummaries,
         @SafeUiDispatcherModule.SafeUiDispatcher dispatcher: CoroutineContext
     ): StateFlow<List<RecipeSummary>> {
-        return getRecipeSummaries.get()
+        return getRecipeSummaries.getRecipeSummaries()
             .map { it.sortedBy { it.title } }
             .stateIn(CoroutineScope(dispatcher), SharingStarted.WhileSubscribed(), emptyList())
     }
