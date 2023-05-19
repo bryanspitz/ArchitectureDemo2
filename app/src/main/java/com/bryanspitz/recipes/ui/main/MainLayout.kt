@@ -29,7 +29,8 @@ import com.bryanspitz.recipes.ui.theme.RecipesTheme
 @Composable
 fun MainLayout(
     recipes: List<RecipeSummary>,
-    onAdd: () -> Unit
+    onAdd: () -> Unit,
+    onClick: (String) -> Unit
 ) {
     val collapse = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -60,7 +61,8 @@ fun MainLayout(
             itemsIndexed(recipes, { _, item -> item.id }) { index, item ->
                 RecipeCard(
                     data = item,
-                    imageAtEnd = index % 2 == 0
+                    imageAtEnd = index % 2 == 0,
+                    onClick = { onClick(item.id) }
                 )
             }
         }
@@ -92,7 +94,8 @@ private fun PreviewMainLayout() {
                     imgUrl = ""
                 )
             ),
-            onAdd = {}
+            onAdd = {},
+            onClick = {}
         )
     }
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.bryanspitz.recipes.ui.main
 
 import androidx.compose.foundation.background
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,10 +26,14 @@ import com.bryanspitz.recipes.ui.theme.RecipesTheme
 fun RecipeCard(
     modifier: Modifier = Modifier,
     data: RecipeSummary,
-    imageAtEnd: Boolean = true
+    imageAtEnd: Boolean = true,
+    onClick: () -> Unit
 ) {
     with(data) {
-        ElevatedCard(modifier = modifier) {
+        ElevatedCard(
+            modifier = modifier,
+            onClick = onClick
+        ) {
             Row {
                 if (!imageAtEnd) {
                     Box(
@@ -72,7 +79,8 @@ private fun PreviewRecipeCardRight() {
                 title = "Pflaumenkuchen",
                 description = "A traditional German plum cake.",
                 imgUrl = ""
-            )
+            ),
+            onClick = {}
         )
     }
 }
@@ -89,7 +97,8 @@ private fun PreviewRecipeCardLeft() {
                 description = "A traditional German plum cake.",
                 imgUrl = ""
             ),
-            imageAtEnd = false
+            imageAtEnd = false,
+            onClick = {}
         )
     }
 }
