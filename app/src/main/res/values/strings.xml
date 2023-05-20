@@ -2,4 +2,7 @@
     <string name="app_name">Recipes</string>
     <string name="my_recipes">My Recipes</string>
     <string name="add_recipe">add recipe</string>
+    <string name="back">Back</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="directions">Directions</string>
 </resources>

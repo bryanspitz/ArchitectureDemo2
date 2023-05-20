@@ -25,7 +25,8 @@ internal class MainActivityTest : ScreenshotTest {
         composeRule.setContent {
             MainLayout(
                 recipes = emptyList(),
-                onAdd = {}
+                onAdd = {},
+                onClick = {}
             )
         }
 
