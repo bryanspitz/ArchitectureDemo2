@@ -1,9 +1,9 @@
 package com.bryanspitz.recipes.ui.main
 
 import com.bryanspitz.recipes.architecture.FeatureSet
-import com.bryanspitz.recipes.architecture.SafeUiDispatcherModule
 import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.repository.recipe.cache.RecipeCacheSource
+import com.bryanspitz.recipes.util.CoroutineDispatcherModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
         RecipeCacheSource::class
     ],
     modules = [
-        SafeUiDispatcherModule::class,
+        CoroutineDispatcherModule::class,
         RecipeSummariesViewModel::class,
         MainModule::class
     ]

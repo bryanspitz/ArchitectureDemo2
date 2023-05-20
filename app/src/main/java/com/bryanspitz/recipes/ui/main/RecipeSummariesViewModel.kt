@@ -1,8 +1,8 @@
 package com.bryanspitz.recipes.ui.main
 
-import com.bryanspitz.recipes.architecture.SafeUiDispatcherModule
 import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.repository.recipe.GetRecipeSummaries
+import com.bryanspitz.recipes.util.CoroutineDispatcherModule
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +18,7 @@ class RecipeSummariesViewModel {
     @Provides
     fun recipeSummaries(
         getRecipeSummaries: GetRecipeSummaries,
-        @SafeUiDispatcherModule.SafeUiDispatcher dispatcher: CoroutineContext
+        @CoroutineDispatcherModule.SafeUiDispatcher dispatcher: CoroutineContext
     ): StateFlow<List<RecipeSummary>> {
         return getRecipeSummaries.getRecipeSummaries()
             .map { it.sortedBy { it.title } }
