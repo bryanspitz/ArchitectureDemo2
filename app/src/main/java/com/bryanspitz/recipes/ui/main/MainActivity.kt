@@ -20,7 +20,8 @@ class MainActivity : ComponentActivity() {
             val component = remember {
                 DaggerMainComponent.factory().create(
                     activity = this,
-                    recipeCacheSource = appComponent
+                    recipeCacheSource = appComponent,
+                    recipeServiceSource = appComponent
                 )
             }
             val recipeSummaries by remember { component.recipeSummaries() }.collectAsState()

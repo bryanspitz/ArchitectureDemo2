@@ -20,8 +20,9 @@ class DetailActivity : ComponentActivity() {
             val recipeId = intent.getStringExtra(PARAM_RECIPE_ID)!!
             val component = remember {
                 DaggerDetailComponent.factory().create(
-                    recipeId,
-                    appComponent
+                    recipeId = recipeId,
+                    recipeCacheSource = appComponent,
+                    recipeServiceSource = appComponent
                 )
             }
             val recipe by remember { component.recipe() }.collectAsState()

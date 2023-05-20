@@ -1,5 +1,7 @@
 package com.bryanspitz.recipes.app
 
+import com.bryanspitz.recipes.repository.recipe.api.MockRecipeServiceModule
+import com.bryanspitz.recipes.repository.recipe.api.RecipeServiceSource
 import com.bryanspitz.recipes.repository.recipe.cache.RecipeCacheSource
 import dagger.Component
 import javax.inject.Scope
@@ -8,8 +10,8 @@ import javax.inject.Scope
 annotation class AppScope
 
 @AppScope
-@Component
-interface AppComponent : RecipeCacheSource {
+@Component(modules = [MockRecipeServiceModule::class])
+interface AppComponent : RecipeCacheSource, RecipeServiceSource {
 
     @Component.Factory
     interface Factory {

@@ -2,6 +2,7 @@ package com.bryanspitz.recipes.ui.main
 
 import com.bryanspitz.recipes.architecture.FeatureSet
 import com.bryanspitz.recipes.model.recipe.RecipeSummary
+import com.bryanspitz.recipes.repository.recipe.api.RecipeServiceSource
 import com.bryanspitz.recipes.repository.recipe.cache.RecipeCacheSource
 import com.bryanspitz.recipes.util.CoroutineDispatcherModule
 import dagger.BindsInstance
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Component(
     dependencies = [
-        RecipeCacheSource::class
+        RecipeCacheSource::class,
+        RecipeServiceSource::class
     ],
     modules = [
         CoroutineDispatcherModule::class,
@@ -27,7 +29,8 @@ interface MainComponent {
     interface Factory {
         fun create(
             @BindsInstance activity: MainActivity,
-            recipeCacheSource: RecipeCacheSource
+            recipeCacheSource: RecipeCacheSource,
+            recipeServiceSource: RecipeServiceSource
         ): MainComponent
     }
 
