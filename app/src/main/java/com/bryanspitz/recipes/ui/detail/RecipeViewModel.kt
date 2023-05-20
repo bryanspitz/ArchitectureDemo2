@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.CoroutineContext
 
 @Module
-class RecipeModule {
+class RecipeViewModel {
 
     @Provides
     fun recipe(
