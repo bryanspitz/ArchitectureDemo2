@@ -29,6 +29,7 @@ class DetailActivity : ComponentActivity() {
             RecipesTheme {
                 DetailLayout(
                     recipe = recipe,
+                    onSaveNotes = {},
                     onBack = { finish() }
                 )
             }

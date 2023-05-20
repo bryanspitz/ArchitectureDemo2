@@ -5,4 +5,8 @@
     <string name="back">Back</string>
     <string name="ingredients">Ingredients</string>
     <string name="directions">Directions</string>
+    <string name="notes">Notes</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
