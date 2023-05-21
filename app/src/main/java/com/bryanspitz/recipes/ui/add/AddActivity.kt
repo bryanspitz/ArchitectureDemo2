@@ -3,8 +3,12 @@ package com.bryanspitz.recipes.ui.add
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.bryanspitz.recipes.ui.theme.RecipesTheme
 import com.bryanspitz.recipes.util.appComponent
 import kotlinx.coroutines.launch
@@ -15,18 +19,29 @@ class AddActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val appComponent = appComponent()
+
+            val title = rememberSaveable(Unit) { mutableStateOf("") }
+            val errorState = remember { SnackbarHostState() }
+
             val component = remember {
                 DaggerAddComponent.factory().create(
+                    activity = this,
+                    title = title,
+                    errorState = errorState,
                     recipeCacheSource = appComponent,
                     recipeServiceSource = appComponent
                 )
             }
             val scope = rememberCoroutineScope()
 
+            LaunchedEffect(Unit) {
+                component.features().launchAll()
+            }
+
             RecipesTheme {
                 AddLayout(
-                    title = "",
-                    onTitleChanged = {},
+                    title = title.value,
+                    onTitleChanged = { title.value = it },
                     description = "",
                     onDescriptionChanged = {},
                     ingredients = emptyList(),
@@ -37,6 +52,7 @@ class AddActivity : ComponentActivity() {
                     onEditInstruction = {},
                     editingInstruction = null,
                     onEditingInstructionChanged = {},
+                    errorState = errorState,
                     onSave = { scope.launch { component.onSave().emit(Unit) } },
                     onBack = { finish() }
                 )

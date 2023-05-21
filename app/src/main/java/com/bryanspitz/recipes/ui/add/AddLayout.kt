@@ -19,6 +19,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -48,6 +50,7 @@ fun AddLayout(
     onEditInstruction: (Int) -> Unit,
     editingInstruction: EditingInstruction?,
     onEditingInstructionChanged: (EditingInstruction) -> Unit,
+    errorState: SnackbarHostState,
     onSave: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -78,6 +81,9 @@ fun AddLayout(
                 },
                 scrollBehavior = collapse
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = errorState)
         }
     ) { padding ->
         Column(
@@ -207,6 +213,7 @@ private fun PreviewAddLayout() {
             onEditInstruction = {},
             editingInstruction = EditingInstruction(0, "Pray."),
             onEditingInstructionChanged = {},
+            errorState = SnackbarHostState(),
             onSave = { },
             onBack = {}
         )
