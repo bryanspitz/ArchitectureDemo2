@@ -30,6 +30,7 @@ interface AddComponent {
         fun create(
             @BindsInstance activity: AddActivity,
             @BindsInstance @Title title: State<String>,
+            @BindsInstance @Description description: State<String>,
             @BindsInstance errorState: SnackbarHostState,
             recipeCacheSource: RecipeCacheSource,
             recipeServiceSource: RecipeServiceSource
@@ -43,6 +44,9 @@ interface AddComponent {
 
     @Qualifier
     annotation class Title
+
+    @Qualifier
+    annotation class Description
 
     @Qualifier
     annotation class Save

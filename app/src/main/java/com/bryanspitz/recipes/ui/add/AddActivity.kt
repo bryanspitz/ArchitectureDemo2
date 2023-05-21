@@ -21,12 +21,14 @@ class AddActivity : ComponentActivity() {
             val appComponent = appComponent()
 
             val title = rememberSaveable(Unit) { mutableStateOf("") }
+            val description = rememberSaveable(Unit) { mutableStateOf("") }
             val errorState = remember { SnackbarHostState() }
 
             val component = remember {
                 DaggerAddComponent.factory().create(
                     activity = this,
                     title = title,
+                    description = description,
                     errorState = errorState,
                     recipeCacheSource = appComponent,
                     recipeServiceSource = appComponent
@@ -42,8 +44,8 @@ class AddActivity : ComponentActivity() {
                 AddLayout(
                     title = title.value,
                     onTitleChanged = { title.value = it },
-                    description = "",
-                    onDescriptionChanged = {},
+                    description = description.value,
+                    onDescriptionChanged = { description.value = it },
                     ingredients = emptyList(),
                     onEditIngredient = {},
                     editingIngredient = null,
