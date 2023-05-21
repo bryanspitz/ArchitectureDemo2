@@ -3,6 +3,7 @@ package com.bryanspitz.recipes.ui.add
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.State
 import com.bryanspitz.recipes.architecture.FeatureSet
+import com.bryanspitz.recipes.model.recipe.Ingredient
 import com.bryanspitz.recipes.repository.recipe.api.RecipeServiceSource
 import com.bryanspitz.recipes.repository.recipe.cache.RecipeCacheSource
 import com.bryanspitz.recipes.util.CoroutineDispatcherModule
@@ -31,6 +32,7 @@ interface AddComponent {
             @BindsInstance activity: AddActivity,
             @BindsInstance @Title title: State<String>,
             @BindsInstance @Description description: State<String>,
+            @BindsInstance ingredients: State<List<Ingredient>>,
             @BindsInstance errorState: SnackbarHostState,
             recipeCacheSource: RecipeCacheSource,
             recipeServiceSource: RecipeServiceSource

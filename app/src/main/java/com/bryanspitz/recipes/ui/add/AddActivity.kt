@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import com.bryanspitz.recipes.model.recipe.Ingredient
 import com.bryanspitz.recipes.ui.theme.RecipesTheme
 import com.bryanspitz.recipes.util.appComponent
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class AddActivity : ComponentActivity() {
 
             val title = rememberSaveable(Unit) { mutableStateOf("") }
             val description = rememberSaveable(Unit) { mutableStateOf("") }
+            val ingredients = rememberSaveable(Unit) { mutableStateOf(listOf<Ingredient>()) }
             val errorState = remember { SnackbarHostState() }
 
             val component = remember {
@@ -29,6 +31,7 @@ class AddActivity : ComponentActivity() {
                     activity = this,
                     title = title,
                     description = description,
+                    ingredients = ingredients,
                     errorState = errorState,
                     recipeCacheSource = appComponent,
                     recipeServiceSource = appComponent
@@ -46,7 +49,7 @@ class AddActivity : ComponentActivity() {
                     onTitleChanged = { title.value = it },
                     description = description.value,
                     onDescriptionChanged = { description.value = it },
-                    ingredients = emptyList(),
+                    ingredients = ingredients.value,
                     onEditIngredient = {},
                     editingIngredient = null,
                     onEditingIngredientChanged = {},
