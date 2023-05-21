@@ -1,6 +1,7 @@
 package com.bryanspitz.recipes.ui.add
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import com.bryanspitz.recipes.R
 import com.bryanspitz.recipes.architecture.Feature
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 class SaveFeature @Inject constructor(
     @AddComponent.Title private val title: State<String>,
-    private val ingredients: State<List<Ingredient>>,
+    private val ingredients: MutableState<List<Ingredient>>,
     @AddComponent.Save private val onSave: MutableSharedFlow<Any>,
     private val activity: AddActivity,
     private val errorState: SnackbarHostState

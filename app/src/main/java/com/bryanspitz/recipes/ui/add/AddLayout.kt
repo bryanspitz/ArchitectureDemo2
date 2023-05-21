@@ -23,6 +23,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,6 +44,7 @@ fun AddLayout(
     description: String,
     onDescriptionChanged: (String) -> Unit,
     ingredients: List<Ingredient>,
+    onAddIngredient: () -> Unit,
     onEditIngredient: (Int) -> Unit,
     editingIngredient: EditingIngredient?,
     onEditingIngredientChanged: (EditingIngredient) -> Unit,
@@ -136,11 +138,19 @@ fun AddLayout(
                         IngredientRow(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 12.dp)
-                                .clickable { onEditIngredient(i) },
+                                .clickable { onEditIngredient(i) }
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
                             ingredient = item
                         )
                     }
+                }
+                TextButton(
+                    onClick = onAddIngredient,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Text(text = stringResource(R.string.add_ingredient))
                 }
             }
 
@@ -196,6 +206,7 @@ private fun PreviewAddLayout() {
                 Ingredient(100f, "mL", "water", "heated to 60C"),
                 Ingredient(null, null, "", null)
             ),
+            onAddIngredient = {},
             onEditIngredient = {},
             editingIngredient = EditingIngredient(
                 index = 1,

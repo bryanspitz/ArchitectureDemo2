@@ -50,6 +50,7 @@ class AddActivity : ComponentActivity() {
                     description = description.value,
                     onDescriptionChanged = { description.value = it },
                     ingredients = ingredients.value,
+                    onAddIngredient = { scope.launch { component.onAddIngredient().emit(Unit) } },
                     onEditIngredient = {},
                     editingIngredient = null,
                     onEditingIngredientChanged = {},

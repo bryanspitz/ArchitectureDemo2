@@ -1,6 +1,7 @@
 package com.bryanspitz.recipes.ui.add
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import com.bryanspitz.recipes.architecture.FeatureSet
 import com.bryanspitz.recipes.model.recipe.Ingredient
@@ -32,7 +33,7 @@ interface AddComponent {
             @BindsInstance activity: AddActivity,
             @BindsInstance @Title title: State<String>,
             @BindsInstance @Description description: State<String>,
-            @BindsInstance ingredients: State<List<Ingredient>>,
+            @BindsInstance ingredients: MutableState<List<Ingredient>>,
             @BindsInstance errorState: SnackbarHostState,
             recipeCacheSource: RecipeCacheSource,
             recipeServiceSource: RecipeServiceSource
@@ -41,6 +42,9 @@ interface AddComponent {
 
     @Save
     fun onSave(): MutableSharedFlow<Any>
+
+    @Ingredients
+    fun onAddIngredient(): MutableSharedFlow<Any>
 
     fun features(): FeatureSet
 
@@ -52,6 +56,9 @@ interface AddComponent {
 
     @Qualifier
     annotation class Save
+
+    @Qualifier
+    annotation class Ingredients
 }
 
 @Module
@@ -60,10 +67,20 @@ class AddModule {
     @get:AddComponent.Save
     val onSave = MutableSharedFlow<Any>()
 
+    @get:Provides
+    @get:AddComponent.Ingredients
+    val onAddIngredient = MutableSharedFlow<Any>()
+
+    @get:Provides
+    @get:AddComponent.Ingredients
+    val onEditIngredient = MutableSharedFlow<Int>()
+
     @Provides
     fun features(
-        saveFeature: SaveFeature
+        saveFeature: SaveFeature,
+        addIngredientFeature: AddIngredientFeature
     ) = FeatureSet(
-        saveFeature
+        saveFeature,
+        addIngredientFeature
     )
 }
