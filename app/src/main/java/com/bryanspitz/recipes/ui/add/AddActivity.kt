@@ -24,6 +24,9 @@ class AddActivity : ComponentActivity() {
             val title = rememberSaveable(Unit) { mutableStateOf("") }
             val description = rememberSaveable(Unit) { mutableStateOf("") }
             val ingredients = rememberSaveable(Unit) { mutableStateOf(listOf<Ingredient>()) }
+            val editingIngredient = rememberSaveable(Unit) {
+                mutableStateOf<EditingIngredient?>(null)
+            }
             val errorState = remember { SnackbarHostState() }
 
             val component = remember {
@@ -32,6 +35,7 @@ class AddActivity : ComponentActivity() {
                     title = title,
                     description = description,
                     ingredients = ingredients,
+                    editingIngredient = editingIngredient,
                     errorState = errorState,
                     recipeCacheSource = appComponent,
                     recipeServiceSource = appComponent
@@ -51,9 +55,9 @@ class AddActivity : ComponentActivity() {
                     onDescriptionChanged = { description.value = it },
                     ingredients = ingredients.value,
                     onAddIngredient = { scope.launch { component.onAddIngredient().emit(Unit) } },
-                    onEditIngredient = {},
-                    editingIngredient = null,
-                    onEditingIngredientChanged = {},
+                    onEditIngredient = { scope.launch { component.onEditIngredient().emit(it) } },
+                    editingIngredient = editingIngredient.value,
+                    onEditingIngredientChanged = { editingIngredient.value = it },
                     instructions = emptyList(),
                     onEditInstruction = {},
                     editingInstruction = null,

@@ -34,6 +34,7 @@ interface AddComponent {
             @BindsInstance @Title title: State<String>,
             @BindsInstance @Description description: State<String>,
             @BindsInstance ingredients: MutableState<List<Ingredient>>,
+            @BindsInstance editingIngredient: MutableState<EditingIngredient?>,
             @BindsInstance errorState: SnackbarHostState,
             recipeCacheSource: RecipeCacheSource,
             recipeServiceSource: RecipeServiceSource
@@ -45,6 +46,9 @@ interface AddComponent {
 
     @Ingredients
     fun onAddIngredient(): MutableSharedFlow<Any>
+
+    @Ingredients
+    fun onEditIngredient(): MutableSharedFlow<Int>
 
     fun features(): FeatureSet
 
@@ -78,9 +82,11 @@ class AddModule {
     @Provides
     fun features(
         saveFeature: SaveFeature,
-        addIngredientFeature: AddIngredientFeature
+        addIngredientFeature: AddIngredientFeature,
+        editIngredientFeature: EditIngredientFeature
     ) = FeatureSet(
         saveFeature,
-        addIngredientFeature
+        addIngredientFeature,
+        editIngredientFeature
     )
 }
