@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class EditIngredientFeature @Inject constructor(
-    private val saver: IngredientSaver,
+    private val ingredientSaver: IngredientSaver,
+    private val instructionSaver: InstructionSaver,
     private val ingredients: MutableState<List<Ingredient>>,
     @AddComponent.Ingredients private val onEditIngredient: MutableSharedFlow<Int>,
     private val editingIngredient: MutableState<EditingIngredient?>
@@ -16,7 +17,7 @@ class EditIngredientFeature @Inject constructor(
 
     override suspend fun start() {
         onEditIngredient.collectLatest { index ->
-            if (saver.saveIngredient()) {
+            if (ingredientSaver.saveIngredient() && instructionSaver.saveInstruction()) {
                 val ingredient = ingredients.value[index]
                 editingIngredient.value = EditingIngredient(
                     index = index,

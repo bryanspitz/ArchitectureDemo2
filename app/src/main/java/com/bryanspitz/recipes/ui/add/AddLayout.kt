@@ -49,6 +49,7 @@ fun AddLayout(
     editingIngredient: EditingIngredient?,
     onEditingIngredientChanged: (EditingIngredient) -> Unit,
     instructions: List<String>,
+    onAddInstruction: () -> Unit,
     onEditInstruction: (Int) -> Unit,
     editingInstruction: EditingInstruction?,
     onEditingInstructionChanged: (EditingInstruction) -> Unit,
@@ -188,6 +189,14 @@ fun AddLayout(
                         )
                     }
                 }
+                TextButton(
+                    onClick = onAddInstruction,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Text(text = stringResource(R.string.add_instruction))
+                }
             }
         }
     }
@@ -221,6 +230,7 @@ private fun PreviewAddLayout() {
                 "Combine ingredients.",
                 "Pray again."
             ),
+            onAddInstruction = {},
             onEditInstruction = {},
             editingInstruction = EditingInstruction(0, "Pray."),
             onEditingInstructionChanged = {},

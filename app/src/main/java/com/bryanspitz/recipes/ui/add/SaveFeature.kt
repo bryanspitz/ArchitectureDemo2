@@ -13,7 +13,9 @@ import javax.inject.Inject
 class SaveFeature @Inject constructor(
     @AddComponent.Title private val title: State<String>,
     private val ingredients: MutableState<List<Ingredient>>,
-    private val saver: IngredientSaver,
+    private val ingredientSaver: IngredientSaver,
+    private val instructions: MutableState<List<String>>,
+    private val instructionSaver: InstructionSaver,
     @AddComponent.Save private val onSave: MutableSharedFlow<Any>,
     private val activity: AddActivity,
     private val errorState: SnackbarHostState
@@ -21,11 +23,13 @@ class SaveFeature @Inject constructor(
 
     override suspend fun start() {
         onSave.collectLatest {
-            if (saver.saveIngredient()) {
+            if (ingredientSaver.saveIngredient() && instructionSaver.saveInstruction()) {
                 if (title.value.isBlank()) {
                     errorState.showSnackbar(activity.getString(R.string.error_title_blank))
                 } else if (ingredients.value.isEmpty()) {
                     errorState.showSnackbar(activity.getString(R.string.error_ingredients_empty))
+                } else if (instructions.value.isEmpty()) {
+                    errorState.showSnackbar(activity.getString(R.string.error_instructions_empty))
                 }
             }
         }

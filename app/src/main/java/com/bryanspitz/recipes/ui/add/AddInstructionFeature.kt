@@ -2,24 +2,23 @@ package com.bryanspitz.recipes.ui.add
 
 import androidx.compose.runtime.MutableState
 import com.bryanspitz.recipes.architecture.Feature
-import com.bryanspitz.recipes.model.recipe.Ingredient
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
-class AddIngredientFeature @Inject constructor(
+class AddInstructionFeature @Inject constructor(
     private val ingredientSaver: IngredientSaver,
     private val instructionSaver: InstructionSaver,
-    private val ingredients: MutableState<List<Ingredient>>,
-    @AddComponent.Ingredients private val onAddIngredient: MutableSharedFlow<Any>,
-    @AddComponent.Ingredients private val onEditIngredient: MutableSharedFlow<Int>
+    private val instructions: MutableState<List<String>>,
+    @AddComponent.Instructions private val onAddInstruction: MutableSharedFlow<Any>,
+    @AddComponent.Instructions private val onEditInstruction: MutableSharedFlow<Int>
 ) : Feature {
 
     override suspend fun start() {
-        onAddIngredient.collectLatest {
+        onAddInstruction.collectLatest {
             if (ingredientSaver.saveIngredient() && instructionSaver.saveInstruction()) {
-                ingredients.value = ingredients.value + Ingredient(name = "")
-                onEditIngredient.emit(ingredients.value.size - 1)
+                instructions.value = instructions.value + ""
+                onEditInstruction.emit(instructions.value.size - 1)
             }
         }
     }

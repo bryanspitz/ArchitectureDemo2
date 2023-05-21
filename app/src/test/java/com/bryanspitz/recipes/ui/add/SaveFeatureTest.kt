@@ -18,13 +18,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 private const val BLANK_TITLE = "title must not be blank"
 private const val EMPTY_INGREDIENTS = "ingredients must not be empty"
+private const val EMPTY_INSTRUCTIONS = "instructions must not be empty"
 
 private const val TITLE = "Recipe Title"
 
 internal class SaveFeatureTest : BehaviorSpec({
     val title = mutableStateOf("")
     val ingredients = mutableStateOf(listOf<Ingredient>())
-    val saver: IngredientSaver = mockk()
+    val ingredientSaver: IngredientSaver = mockk()
+    val instructions = mutableStateOf(listOf<String>())
+    val instructionSaver: InstructionSaver = mockk()
     val onSave = MutableSharedFlow<Any>()
     val activity: AddActivity = mockk()
     val errorState: SnackbarHostState = mockk()
@@ -32,7 +35,9 @@ internal class SaveFeatureTest : BehaviorSpec({
     val feature = SaveFeature(
         title = title,
         ingredients = ingredients,
-        saver = saver,
+        ingredientSaver = ingredientSaver,
+        instructions = instructions,
+        instructionSaver = instructionSaver,
         onSave = onSave,
         activity = activity,
         errorState = errorState
@@ -40,8 +45,10 @@ internal class SaveFeatureTest : BehaviorSpec({
 
     every { activity.getString(R.string.error_title_blank) } returns BLANK_TITLE
     every { activity.getString(R.string.error_ingredients_empty) } returns EMPTY_INGREDIENTS
+    every { activity.getString(R.string.error_instructions_empty) } returns EMPTY_INSTRUCTIONS
     coEvery { errorState.showSnackbar(any<String>()) } returns SnackbarResult.Dismissed
-    val saveResult = coEvery { saver.saveIngredient() }.deferReturn()
+    val ingredientResult = coEvery { ingredientSaver.saveIngredient() }.deferReturn()
+    val instructionResult = coEvery { instructionSaver.saveInstruction() }.deferReturn()
 
     Given("feature is started") {
         feature.startAndTest {
@@ -51,14 +58,25 @@ internal class SaveFeatureTest : BehaviorSpec({
                     onSave.emit(Unit)
 
                     And("ingredient saver succeeds") {
-                        saveResult.complete(true)
+                        ingredientResult.complete(true)
 
-                        Then("show error message") {
-                            coVerify { errorState.showSnackbar(BLANK_TITLE) }
+                        And("instruction saver succeeds") {
+                            instructionResult.complete(true)
+
+                            Then("show error message") {
+                                coVerify { errorState.showSnackbar(BLANK_TITLE) }
+                            }
+                        }
+                        And("instruction saver fails") {
+                            instructionResult.complete(false)
+
+                            Then("do not show error message") {
+                                verify { errorState wasNot called }
+                            }
                         }
                     }
                     And("ingredient saver fails") {
-                        saveResult.complete(false)
+                        ingredientResult.complete(false)
 
                         Then("do not show error message") {
                             verify { errorState wasNot called }
@@ -73,14 +91,25 @@ internal class SaveFeatureTest : BehaviorSpec({
                     onSave.emit(Unit)
 
                     And("ingredient saver succeeds") {
-                        saveResult.complete(true)
+                        ingredientResult.complete(true)
 
-                        Then("show error message") {
-                            coVerify { errorState.showSnackbar(BLANK_TITLE) }
+                        And("instruction saver succeeds") {
+                            instructionResult.complete(true)
+
+                            Then("show error message") {
+                                coVerify { errorState.showSnackbar(BLANK_TITLE) }
+                            }
+                        }
+                        And("instruction saver fails") {
+                            instructionResult.complete(false)
+
+                            Then("do not show error message") {
+                                verify { errorState wasNot called }
+                            }
                         }
                     }
                     And("ingredient saver fails") {
-                        saveResult.complete(false)
+                        ingredientResult.complete(false)
 
                         Then("do not show error message") {
                             verify { errorState wasNot called }
@@ -97,14 +126,25 @@ internal class SaveFeatureTest : BehaviorSpec({
                         onSave.emit(Unit)
 
                         And("ingredient saver succeeds") {
-                            saveResult.complete(true)
+                            ingredientResult.complete(true)
 
-                            Then("show error message") {
-                                coVerify { errorState.showSnackbar(EMPTY_INGREDIENTS) }
+                            And("instruction saver succeeds") {
+                                instructionResult.complete(true)
+
+                                Then("show error message") {
+                                    coVerify { errorState.showSnackbar(EMPTY_INGREDIENTS) }
+                                }
+                            }
+                            And("instruction saver fails") {
+                                instructionResult.complete(false)
+
+                                Then("do not show error message") {
+                                    verify { errorState wasNot called }
+                                }
                             }
                         }
                         And("ingredient saver fails") {
-                            saveResult.complete(false)
+                            ingredientResult.complete(false)
 
                             Then("do not show error message") {
                                 verify { errorState wasNot called }
@@ -119,25 +159,81 @@ internal class SaveFeatureTest : BehaviorSpec({
                         Ingredient(name = "salt")
                     )
 
-                    When("save button is clicked") {
-                        onSave.emit(Unit)
+                    And("instructions are empty") {
+                        When("save button is clicked") {
+                            onSave.emit(Unit)
 
-                        And("ingredient saver succeeds") {
-                            saveResult.complete(true)
+                            And("ingredient saver succeeds") {
+                                ingredientResult.complete(true)
 
-                            Then("do not show error message") {
-                                verify { errorState wasNot called }
+                                And("instruction saver succeeds") {
+                                    instructionResult.complete(true)
+
+                                    Then("show error message") {
+                                        coVerify { errorState.showSnackbar(EMPTY_INSTRUCTIONS) }
+                                    }
+                                }
+                                And("instruction saver fails") {
+                                    instructionResult.complete(false)
+
+                                    Then("do not show error message") {
+                                        verify { errorState wasNot called }
+                                    }
+                                }
+                            }
+                            And("ingredient saver fails") {
+                                ingredientResult.complete(false)
+
+                                Then("do not show error message") {
+                                    verify { errorState wasNot called }
+                                }
                             }
                         }
-                        And("ingredient saver fails") {
-                            saveResult.complete(false)
 
-                            Then("do not show error message") {
-                                verify { errorState wasNot called }
+                    }
+
+                    And("instructions are not empty") {
+                        instructions.value = listOf("Pray.")
+
+                        When("save button is clicked") {
+                            onSave.emit(Unit)
+
+                            And("ingredient saver succeeds") {
+                                ingredientResult.complete(true)
+
+                                And("instruction saver succeeds") {
+                                    instructionResult.complete(true)
+
+                                    Then("do not show error message") {
+                                        verify { errorState wasNot called }
+                                    }
+                                }
+                                And("instruction saver fails") {
+                                    instructionResult.complete(false)
+
+                                    Then("do not show error message") {
+                                        verify { errorState wasNot called }
+                                    }
+                                }
                             }
-                        }
-                        Then("do not show error") {
-                            verify { errorState wasNot called }
+                            And("ingredient saver fails") {
+                                ingredientResult.complete(false)
+
+                                And("instruction saver succeeds") {
+                                    instructionResult.complete(true)
+
+                                    Then("do not show error message") {
+                                        verify { errorState wasNot called }
+                                    }
+                                }
+                                And("instruction saver fails") {
+                                    instructionResult.complete(false)
+
+                                    Then("do not show error message") {
+                                        verify { errorState wasNot called }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -1,7 +1,6 @@
 package com.bryanspitz.recipes.ui.add
 
 import androidx.compose.runtime.mutableStateOf
-import com.bryanspitz.recipes.model.recipe.Ingredient
 import com.bryanspitz.recipes.testutils.deferReturn
 import com.bryanspitz.recipes.testutils.startAndTest
 import io.kotest.core.spec.style.BehaviorSpec
@@ -11,21 +10,21 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-internal class EditIngredientFeatureTest : BehaviorSpec({
+internal class EditInstructionFeatureTest : BehaviorSpec({
     val ingredientSaver: IngredientSaver = mockk()
     val instructionSaver: InstructionSaver = mockk()
-    val ingredients = mutableStateOf(
-        listOf(Ingredient(amount = 1f, unit = "cup", name = "apple", preparation = "diced"))
+    val instructions = mutableStateOf(
+        listOf("Do Step 1.")
     )
-    val onEditIngredient = MutableSharedFlow<Int>()
-    val editingIngredient = mutableStateOf<EditingIngredient?>(null)
+    val onEditInstruction = MutableSharedFlow<Int>()
+    val editingInstruction = mutableStateOf<EditingInstruction?>(null)
 
-    val feature = EditIngredientFeature(
+    val feature = EditInstructionFeature(
         ingredientSaver = ingredientSaver,
         instructionSaver = instructionSaver,
-        ingredients = ingredients,
-        onEditIngredient = onEditIngredient,
-        editingIngredient = editingIngredient
+        instructions = instructions,
+        onEditInstruction = onEditInstruction,
+        editingInstruction = editingInstruction
     )
 
     val ingredientSuccess = coEvery { ingredientSaver.saveIngredient() }.deferReturn()
@@ -34,7 +33,7 @@ internal class EditIngredientFeatureTest : BehaviorSpec({
     Given("feature is started") {
         feature.startAndTest {
             When("ingredient is edited") {
-                onEditIngredient.emit(0)
+                onEditInstruction.emit(0)
 
                 And("saving current ingredient succeeds") {
                     ingredientSuccess.complete(true)
@@ -42,13 +41,10 @@ internal class EditIngredientFeatureTest : BehaviorSpec({
                     And("saving current instruction succeeds") {
                         instructionSuccess.complete(true)
 
-                        Then("create ingredient scratch pad") {
-                            editingIngredient.value shouldBe EditingIngredient(
+                        Then("create instruction scratch pad") {
+                            editingInstruction.value shouldBe EditingInstruction(
                                 index = 0,
-                                amount = "1.0",
-                                unit = "cup",
-                                name = "apple",
-                                preparation = "diced"
+                                instruction = "Do Step 1."
                             )
                         }
                     }
@@ -56,7 +52,7 @@ internal class EditIngredientFeatureTest : BehaviorSpec({
                         instructionSuccess.complete(false)
 
                         Then("do not change editing ingredient") {
-                            editingIngredient.value.shouldBeNull()
+                            editingInstruction.value.shouldBeNull()
                         }
                     }
                 }
@@ -64,7 +60,7 @@ internal class EditIngredientFeatureTest : BehaviorSpec({
                     ingredientSuccess.complete(false)
 
                     Then("do not change editing ingredient") {
-                        editingIngredient.value.shouldBeNull()
+                        editingInstruction.value.shouldBeNull()
                     }
                 }
             }

@@ -35,6 +35,8 @@ interface AddComponent {
             @BindsInstance @Description description: State<String>,
             @BindsInstance ingredients: MutableState<List<Ingredient>>,
             @BindsInstance editingIngredient: MutableState<EditingIngredient?>,
+            @BindsInstance instructions: MutableState<List<String>>,
+            @BindsInstance editingInstruction: MutableState<EditingInstruction?>,
             @BindsInstance errorState: SnackbarHostState,
             recipeCacheSource: RecipeCacheSource,
             recipeServiceSource: RecipeServiceSource
@@ -50,6 +52,12 @@ interface AddComponent {
     @Ingredients
     fun onEditIngredient(): MutableSharedFlow<Int>
 
+    @Instructions
+    fun onAddInstruction(): MutableSharedFlow<Any>
+
+    @Instructions
+    fun onEditInstruction(): MutableSharedFlow<Int>
+
     fun features(): FeatureSet
 
     @Qualifier
@@ -63,6 +71,9 @@ interface AddComponent {
 
     @Qualifier
     annotation class Ingredients
+
+    @Qualifier
+    annotation class Instructions
 }
 
 @Module
@@ -79,14 +90,26 @@ class AddModule {
     @get:AddComponent.Ingredients
     val onEditIngredient = MutableSharedFlow<Int>()
 
+    @get:Provides
+    @get:AddComponent.Instructions
+    val onAddInstruction = MutableSharedFlow<Any>()
+
+    @get:Provides
+    @get:AddComponent.Instructions
+    val onEditInstruction = MutableSharedFlow<Int>()
+
     @Provides
     fun features(
         saveFeature: SaveFeature,
         addIngredientFeature: AddIngredientFeature,
-        editIngredientFeature: EditIngredientFeature
+        editIngredientFeature: EditIngredientFeature,
+        addInstructionFeature: AddInstructionFeature,
+        editInstructionFeature: EditInstructionFeature
     ) = FeatureSet(
         saveFeature,
         addIngredientFeature,
-        editIngredientFeature
+        editIngredientFeature,
+        addInstructionFeature,
+        editInstructionFeature
     )
 }

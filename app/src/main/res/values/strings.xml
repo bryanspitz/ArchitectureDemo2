@@ -21,4 +21,7 @@
     <string name="add_ingredient">Add Ingredient</string>
     <string name="error_amount_not_number">The ingredient amount must be a number.</string>
     <string name="error_ingredient_name_empty">The ingredient must have a name.</string>
+    <string name="add_instruction">Add Step</string>
+    <string name="error_instructions_empty">The recipe must contain at least one step.</string>
+    <string name="error_instruction_blank">The instruction must not be blank.</string>
 </resources>

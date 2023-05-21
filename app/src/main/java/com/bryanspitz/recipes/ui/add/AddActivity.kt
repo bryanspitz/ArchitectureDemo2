@@ -27,6 +27,10 @@ class AddActivity : ComponentActivity() {
             val editingIngredient = rememberSaveable(Unit) {
                 mutableStateOf<EditingIngredient?>(null)
             }
+            val instructions = rememberSaveable(Unit) { mutableStateOf(listOf<String>()) }
+            val editingInstruction = rememberSaveable(Unit) {
+                mutableStateOf<EditingInstruction?>(null)
+            }
             val errorState = remember { SnackbarHostState() }
 
             val component = remember {
@@ -36,6 +40,8 @@ class AddActivity : ComponentActivity() {
                     description = description,
                     ingredients = ingredients,
                     editingIngredient = editingIngredient,
+                    instructions = instructions,
+                    editingInstruction = editingInstruction,
                     errorState = errorState,
                     recipeCacheSource = appComponent,
                     recipeServiceSource = appComponent
@@ -58,10 +64,11 @@ class AddActivity : ComponentActivity() {
                     onEditIngredient = { scope.launch { component.onEditIngredient().emit(it) } },
                     editingIngredient = editingIngredient.value,
                     onEditingIngredientChanged = { editingIngredient.value = it },
-                    instructions = emptyList(),
-                    onEditInstruction = {},
-                    editingInstruction = null,
-                    onEditingInstructionChanged = {},
+                    instructions = instructions.value,
+                    onAddInstruction = { scope.launch { component.onAddInstruction().emit(Unit) } },
+                    onEditInstruction = { scope.launch { component.onEditInstruction().emit(it) } },
+                    editingInstruction = editingInstruction.value,
+                    onEditingInstructionChanged = { editingInstruction.value = it },
                     errorState = errorState,
                     onSave = { scope.launch { component.onSave().emit(Unit) } },
                     onBack = { finish() }
