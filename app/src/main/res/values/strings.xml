@@ -19,4 +19,6 @@
     <string name="error_title_blank">The recipe title must not be blank.</string>
     <string name="error_ingredients_empty">The recipe must contain at least one ingredient.</string>
     <string name="add_ingredient">Add Ingredient</string>
+    <string name="error_amount_not_number">The ingredient amount must be a number.</string>
+    <string name="error_ingredient_name_empty">The ingredient must have a name.</string>
 </resources>

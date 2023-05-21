@@ -45,20 +45,20 @@ fun AddIngredient(
                 )
                 OutlinedTextField(
                     value = unit,
-                    onValueChange = { onChanged(copy(amount = it)) },
+                    onValueChange = { onChanged(copy(unit = it)) },
                     modifier = Modifier.width(80.dp),
                     label = { Text(stringResource(R.string.unit)) }
                 )
                 OutlinedTextField(
                     value = name,
-                    onValueChange = { onChanged(copy(amount = it)) },
+                    onValueChange = { onChanged(copy(name = it)) },
                     modifier = Modifier.weight(1f),
                     label = { Text(stringResource(R.string.name)) }
                 )
             }
             OutlinedTextField(
                 value = preparation,
-                onValueChange = { onChanged(copy(amount = it)) },
+                onValueChange = { onChanged(copy(preparation = it)) },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(stringResource(R.string.preparation)) }
             )
