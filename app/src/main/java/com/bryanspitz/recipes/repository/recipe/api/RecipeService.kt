@@ -10,6 +10,8 @@ interface RecipeService {
     suspend fun getRecipe(id: String): Recipe
 
     suspend fun updateRecipeNotes(id: String, notes: String): Recipe
+
+    suspend fun addNewRecipe(recipe: Recipe): Recipe
 }
 
 interface RecipeServiceSource {
