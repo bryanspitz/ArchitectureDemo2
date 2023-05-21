@@ -10,4 +10,10 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="new_recipe">New Recipe</string>
+    <string name="amount">Amount</string>
+    <string name="unit">Unit</string>
+    <string name="name">Name</string>
+    <string name="preparation">Preparation</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 </resources>

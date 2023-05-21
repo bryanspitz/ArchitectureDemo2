@@ -93,7 +93,10 @@ fun DetailLayout(
                             .padding(16.dp)
                     ) {
                         ingredients.forEach {
-                            IngredientRow(it)
+                            IngredientRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                ingredient = it
+                            )
                         }
                     }
 
@@ -111,7 +114,11 @@ fun DetailLayout(
                             .padding(16.dp)
                     ) {
                         instructions.forEachIndexed { i, inst ->
-                            InstructionRow(i, inst)
+                            InstructionRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                number = i + 1,
+                                instruction = inst
+                            )
                         }
                     }
 
@@ -145,27 +152,36 @@ fun DetailLayout(
 }
 
 @Composable
-private fun InstructionRow(i: Int, inst: String) {
+fun InstructionRow(
+    modifier: Modifier = Modifier,
+    number: Int,
+    instruction: String
+) {
     Row(
-        horizontalArrangement = spacedBy(4.dp)
+        horizontalArrangement = spacedBy(4.dp),
+        modifier = modifier
     ) {
         Text(
-            text = "${i + 1}.",
+            text = "$number.",
             modifier = Modifier.width(32.dp)
         )
-        Text(text = inst)
+        Text(text = instruction)
     }
 }
 
 @Composable
-private fun IngredientRow(ingredient: Ingredient) {
+fun IngredientRow(
+    modifier: Modifier = Modifier,
+    ingredient: Ingredient
+) {
     Row(
-        horizontalArrangement = spacedBy(4.dp)
+        horizontalArrangement = spacedBy(4.dp),
+        modifier = modifier
     ) {
         Text(
             text = ingredient.amount?.let { "$it" } ?: "",
             textAlign = TextAlign.End,
-            modifier = Modifier.width(32.dp)
+            modifier = Modifier.width(46.dp)
         )
         Text(
             text = ingredient.unit ?: "",

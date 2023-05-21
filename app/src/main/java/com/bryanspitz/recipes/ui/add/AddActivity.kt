@@ -25,6 +25,18 @@ class AddActivity : ComponentActivity() {
 
             RecipesTheme {
                 AddLayout(
+                    title = "",
+                    onTitleChanged = {},
+                    description = "",
+                    onDescriptionChanged = {},
+                    ingredients = emptyList(),
+                    onEditIngredient = {},
+                    editingIngredient = null,
+                    onEditingIngredientChanged = {},
+                    instructions = emptyList(),
+                    onEditInstruction = {},
+                    editingInstruction = null,
+                    onEditingInstructionChanged = {},
                     onSave = { scope.launch { component.onSave().emit(Unit) } },
                     onBack = { finish() }
                 )
