@@ -44,18 +44,18 @@ internal class RecipeSummariesViewModelTest : BehaviorSpec({
                         ),
                         RecipeSummary(
                             id = "a",
-                            title = "A",
+                            title = "a",
                             description = "whatever",
                             imgUrl = "src"
                         )
                     )
                 )
 
-                Then("emit results sorted alphabetically") {
+                Then("emit results sorted alphabetically (case-insensitive)") {
                     it.latestValue shouldBe listOf(
                         RecipeSummary(
                             id = "a",
-                            title = "A",
+                            title = "a",
                             description = "whatever",
                             imgUrl = "src"
                         ),

@@ -1,5 +1,7 @@
 package com.bryanspitz.recipes.ui.main
 
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toLowerCase
 import com.bryanspitz.recipes.model.recipe.RecipeSummary
 import com.bryanspitz.recipes.repository.recipe.GetRecipeSummaries
 import com.bryanspitz.recipes.util.CoroutineDispatcherModule
@@ -21,7 +23,7 @@ class RecipeSummariesViewModel {
         @CoroutineDispatcherModule.SafeUiDispatcher dispatcher: CoroutineContext
     ): StateFlow<List<RecipeSummary>?> {
         return getRecipeSummaries.getRecipeSummaries()
-            .map { it.sortedBy { it.title } }
+            .map { it.sortedBy { it.title.toLowerCase(Locale.current) } }
             .stateIn(CoroutineScope(dispatcher), SharingStarted.WhileSubscribed(), null)
     }
 }
