@@ -19,9 +19,9 @@ class RecipeSummariesViewModel {
     fun recipeSummaries(
         getRecipeSummaries: GetRecipeSummaries,
         @CoroutineDispatcherModule.SafeUiDispatcher dispatcher: CoroutineContext
-    ): StateFlow<List<RecipeSummary>> {
+    ): StateFlow<List<RecipeSummary>?> {
         return getRecipeSummaries.getRecipeSummaries()
             .map { it.sortedBy { it.title } }
-            .stateIn(CoroutineScope(dispatcher), SharingStarted.WhileSubscribed(), emptyList())
+            .stateIn(CoroutineScope(dispatcher), SharingStarted.WhileSubscribed(), null)
     }
 }

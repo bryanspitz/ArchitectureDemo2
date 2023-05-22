@@ -1,6 +1,7 @@
 package com.bryanspitz.recipes.ui.main
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -16,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -28,7 +31,7 @@ import com.bryanspitz.recipes.ui.theme.RecipesTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainLayout(
-    recipes: List<RecipeSummary>,
+    recipes: List<RecipeSummary>?,
     onAdd: () -> Unit,
     onClick: (String) -> Unit
 ) {
@@ -51,19 +54,28 @@ fun MainLayout(
             }
         }
     ) { padding ->
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = spacedBy(16.dp)
+                .padding(padding)
         ) {
-            itemsIndexed(recipes, { _, item -> item.id }) { index, item ->
-                RecipeCard(
-                    data = item,
-                    imageAtEnd = index % 2 == 0,
-                    onClick = { onClick(item.id) }
-                )
+            if (recipes != null) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = spacedBy(16.dp)
+                ) {
+                    itemsIndexed(recipes, { _, item -> item.id }) { index, item ->
+                        RecipeCard(
+                            data = item,
+                            imageAtEnd = index % 2 == 0,
+                            onClick = { onClick(item.id) }
+                        )
+                    }
+                }
+            } else {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }
@@ -94,6 +106,18 @@ private fun PreviewMainLayout() {
                     imgUrl = ""
                 )
             ),
+            onAdd = {},
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewMainLayoutLoading() {
+    RecipesTheme {
+        MainLayout(
+            recipes = null,
             onAdd = {},
             onClick = {}
         )
