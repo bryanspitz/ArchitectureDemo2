@@ -50,7 +50,7 @@ class MockRecipeService @Inject constructor() : RecipeService {
         delay(1000)
         return internalCache.data.value.recipes[id]
             ?: internalCache.data.value.summaries.firstOrNull { it.id == id }?.let {
-                Recipe(
+                val result = Recipe(
                     summary = it,
                     ingredients = listOf(
                         Ingredient(1f, "unit", "appropriate ingredient", "chopped")
@@ -60,6 +60,8 @@ class MockRecipeService @Inject constructor() : RecipeService {
                     ),
                     notes = ""
                 )
+                internalCache.mutate { it.copy(recipes = it.recipes + (id to result)) }
+                result
             } ?: Recipe(
                 summary = RecipeSummary(
                     id = id,
