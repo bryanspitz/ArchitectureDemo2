@@ -52,6 +52,12 @@ interface AddComponent {
     @Ingredients
     fun onEditIngredient(): MutableSharedFlow<Int>
 
+    @SaveIngredient
+    fun onSaveIngredient(): MutableSharedFlow<Any>
+
+    @DeleteIngredient
+    fun onDeleteIngredient(): MutableSharedFlow<Any>
+
     @Instructions
     fun onAddInstruction(): MutableSharedFlow<Any>
 
@@ -73,6 +79,12 @@ interface AddComponent {
     annotation class Ingredients
 
     @Qualifier
+    annotation class SaveIngredient
+
+    @Qualifier
+    annotation class DeleteIngredient
+
+    @Qualifier
     annotation class Instructions
 }
 
@@ -91,6 +103,14 @@ class AddModule {
     val onEditIngredient = MutableSharedFlow<Int>()
 
     @get:Provides
+    @get:AddComponent.SaveIngredient
+    val onSaveIngredient = MutableSharedFlow<Any>()
+
+    @get:Provides
+    @get:AddComponent.DeleteIngredient
+    val onDeleteIngredient = MutableSharedFlow<Any>()
+
+    @get:Provides
     @get:AddComponent.Instructions
     val onAddInstruction = MutableSharedFlow<Any>()
 
@@ -103,12 +123,16 @@ class AddModule {
         saveFeature: SaveFeature,
         addIngredientFeature: AddIngredientFeature,
         editIngredientFeature: EditIngredientFeature,
+        saveIngredientFeature: SaveIngredientFeature,
+        deleteIngredientFeature: DeleteIngredientFeature,
         addInstructionFeature: AddInstructionFeature,
         editInstructionFeature: EditInstructionFeature
     ) = FeatureSet(
         saveFeature,
         addIngredientFeature,
         editIngredientFeature,
+        saveIngredientFeature,
+        deleteIngredientFeature,
         addInstructionFeature,
         editInstructionFeature
     )
