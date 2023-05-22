@@ -68,9 +68,18 @@ private fun RecipeNotesLayout(
         verticalArrangement = spacedBy(4.dp)
     ) {
         if (!isEditing) {
-            Text(text = originalNotes)
+            if (originalNotes.isNotEmpty()) {
+                Text(text = originalNotes)
+            }
             Button(onClick = onEdit) {
-                Text(text = stringResource(R.string.edit))
+                Text(
+                    text = stringResource(
+                        if (originalNotes.isNotEmpty())
+                            R.string.edit
+                        else
+                            R.string.add
+                    )
+                )
             }
         } else {
             OutlinedTextField(
@@ -78,6 +87,7 @@ private fun RecipeNotesLayout(
                 onValueChange = onChangeText,
                 modifier = Modifier.fillMaxWidth()
             )
+
             Row(horizontalArrangement = spacedBy(16.dp)) {
                 Button(onClick = onSave) {
                     Text(text = stringResource(R.string.save))
@@ -112,6 +122,25 @@ private fun PreviewRecipeNotesLayout() {
     RecipesTheme {
         RecipeNotesLayout(
             originalNotes = "Original text",
+            currentNotes = "Updated text",
+            isEditing = false,
+            onEdit = {},
+            onSave = {},
+            onCancel = {},
+            onChangeText = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewRecipeNotesLayoutEmpty() {
+    RecipesTheme {
+        RecipeNotesLayout(
+            originalNotes = "",
             currentNotes = "Updated text",
             isEditing = false,
             onEdit = {},
