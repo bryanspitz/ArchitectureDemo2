@@ -73,6 +73,12 @@ class AddActivity : ComponentActivity() {
                     instructions = instructions.value,
                     onAddInstruction = { scope.launch { component.onAddInstruction().emit(Unit) } },
                     onEditInstruction = { scope.launch { component.onEditInstruction().emit(it) } },
+                    onSaveInstruction = { scope.launch { component.onSaveInstruction().emit(Unit) } },
+                    onDeleteInstruction = {
+                        scope.launch {
+                            component.onDeleteInstruction().emit(Unit)
+                        }
+                    },
                     editingInstruction = editingInstruction.value,
                     onEditingInstructionChanged = { editingInstruction.value = it },
                     errorState = errorState,

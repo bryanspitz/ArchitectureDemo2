@@ -53,6 +53,8 @@ fun AddLayout(
     instructions: List<String>,
     onAddInstruction: () -> Unit,
     onEditInstruction: (Int) -> Unit,
+    onSaveInstruction: () -> Unit,
+    onDeleteInstruction: () -> Unit,
     editingInstruction: EditingInstruction?,
     onEditingInstructionChanged: (EditingInstruction) -> Unit,
     errorState: SnackbarHostState,
@@ -179,7 +181,9 @@ fun AddLayout(
                                     .fillMaxWidth()
                                     .padding(16.dp),
                                 instruction = editingInstruction,
-                                onChanged = onEditingInstructionChanged
+                                onChanged = onEditingInstructionChanged,
+                                onSave = onSaveInstruction,
+                                onDelete = onDeleteInstruction
                             )
                         }
                     } else {
@@ -238,6 +242,8 @@ private fun PreviewAddLayout() {
             ),
             onAddInstruction = {},
             onEditInstruction = {},
+            onSaveInstruction = {},
+            onDeleteInstruction = {},
             editingInstruction = EditingInstruction(0, "Pray."),
             onEditingInstructionChanged = {},
             errorState = SnackbarHostState(),
