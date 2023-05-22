@@ -62,6 +62,8 @@ class AddActivity : ComponentActivity() {
                     ingredients = ingredients.value,
                     onAddIngredient = { scope.launch { component.onAddIngredient().emit(Unit) } },
                     onEditIngredient = { scope.launch { component.onEditIngredient().emit(it) } },
+                    onSaveIngredient = {},
+                    onDeleteIngredient = {},
                     editingIngredient = editingIngredient.value,
                     onEditingIngredientChanged = { editingIngredient.value = it },
                     instructions = instructions.value,

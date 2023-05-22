@@ -46,6 +46,8 @@ fun AddLayout(
     ingredients: List<Ingredient>,
     onAddIngredient: () -> Unit,
     onEditIngredient: (Int) -> Unit,
+    onSaveIngredient: () -> Unit,
+    onDeleteIngredient: () -> Unit,
     editingIngredient: EditingIngredient?,
     onEditingIngredientChanged: (EditingIngredient) -> Unit,
     instructions: List<String>,
@@ -132,7 +134,9 @@ fun AddLayout(
                                     .fillMaxWidth()
                                     .padding(16.dp),
                                 ingredient = editingIngredient,
-                                onChanged = onEditingIngredientChanged
+                                onChanged = onEditingIngredientChanged,
+                                onSave = onSaveIngredient,
+                                onDelete = onDeleteIngredient
                             )
                         }
                     } else {
@@ -217,6 +221,8 @@ private fun PreviewAddLayout() {
             ),
             onAddIngredient = {},
             onEditIngredient = {},
+            onSaveIngredient = {},
+            onDeleteIngredient = {},
             editingIngredient = EditingIngredient(
                 index = 1,
                 amount = "1",
