@@ -1,0 +1,43 @@
+Intro
+- can't share previous codebases
+- wrote this app in one week
+- UX is awkward, but shows off architecture patterns
+- not hooked up to a real API, ran out of time
+- app demo
+
+MVVM
+- Google-recommended MVVM architecture uses a single ViewModel
+	- combines all state providers and all event handlers into one giant class
+		- combines too many jobs
+		- combines two different *kinds* of jobs
+		- dependencies aren't clear
+		- each event can have only a single handler
+		- since VM survives death of Activity, it can't have Activity as a dependency
+- instead, split into separate files
+	- features for event handling
+		- use SharedFlows to get events from view
+	- state flow modules for providing/transforming state from the repository
+	- rememberSaveable<MutableState> for view state that doesn't go in the main repo
+	- huge advantages for dependency injection and unit testing
+		- each feature and state flow can be tested independently, with only its own dependencies
+		- each one has a clear list of dependencies
+	- features can even be used at different component layers
+
+Repository
+- based roughly on Apollo GraphQL library
+- cache is my interpretation of redux
+	- emits updates
+	- allows clients to mutate the data with a lambda
+	- return original data when mutating, for optimistic rollback
+- each operation is a separate class
+	- same philosophy as Features
+		- only one job to test
+		- clear list of dependencies
+- operations usually perform one api call and then update the app's cache
+	- implementation is completely independent of UX layers
+- GET operations typically perform a fetch and then observe cache updates
+	- but could use a different fetching strategy
+		- cache only: just observe cache updates
+		- cache then fetch: emit the current cache value before fetching
+- PUT or POST operations typically perform api call and update cache
+	- but could update the cache first, optimistically, then roll back on failure
