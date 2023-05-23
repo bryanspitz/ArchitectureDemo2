@@ -3,6 +3,7 @@ package com.bryanspitz.recipes.ui.detail
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,9 +22,14 @@ class DetailActivity : ComponentActivity() {
         setContent {
             val appComponent = appComponent()
             val recipeId = intent.getStringExtra(PARAM_RECIPE_ID)!!
+
+            val errorState = remember { SnackbarHostState() }
+
             val component = remember {
                 DaggerDetailComponent.factory().create(
+                    activity = this,
                     recipeId = recipeId,
+                    errorState = errorState,
                     recipeCacheSource = appComponent,
                     recipeServiceSource = appComponent
                 )
@@ -39,7 +45,8 @@ class DetailActivity : ComponentActivity() {
                 DetailLayout(
                     recipe = recipe,
                     onSaveNotes = { scope.launch { component.onSaveNotes().emit(it) } },
-                    onBack = { finish() }
+                    onBack = { finish() },
+                    errorState = errorState
                 )
             }
         }

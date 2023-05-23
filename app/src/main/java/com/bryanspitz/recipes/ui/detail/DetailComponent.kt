@@ -1,5 +1,6 @@
 package com.bryanspitz.recipes.ui.detail
 
+import androidx.compose.material3.SnackbarHostState
 import com.bryanspitz.recipes.architecture.FeatureSet
 import com.bryanspitz.recipes.model.recipe.Recipe
 import com.bryanspitz.recipes.repository.recipe.api.RecipeServiceSource
@@ -28,7 +29,9 @@ interface DetailComponent {
     @Component.Factory
     interface Factory {
         fun create(
+            @BindsInstance activity: DetailActivity,
             @BindsInstance recipeId: String,
+            @BindsInstance errorState: SnackbarHostState,
             recipeCacheSource: RecipeCacheSource,
             recipeServiceSource: RecipeServiceSource
         ): DetailComponent

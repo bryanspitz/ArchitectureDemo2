@@ -21,6 +21,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -45,7 +47,8 @@ import com.bryanspitz.recipes.ui.theme.RecipesTheme
 fun DetailLayout(
     recipe: Recipe?,
     onSaveNotes: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    errorState: SnackbarHostState
 ) {
     val collapse = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -66,6 +69,9 @@ fun DetailLayout(
                 },
                 scrollBehavior = collapse
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = errorState)
         }
     ) { padding ->
         if (recipe != null) {
@@ -209,7 +215,8 @@ private fun PreviewDetailLayoutLoading() {
         DetailLayout(
             recipe = null,
             onSaveNotes = {},
-            onBack = {}
+            onBack = {},
+            errorState = SnackbarHostState()
         )
     }
 }
@@ -221,7 +228,8 @@ private fun PreviewDetailLayoutPopulated() {
         DetailLayout(
             recipe = testRecipe,
             onSaveNotes = {},
-            onBack = {}
+            onBack = {},
+            errorState = SnackbarHostState()
         )
     }
 }

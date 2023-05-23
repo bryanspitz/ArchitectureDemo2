@@ -11,8 +11,13 @@ class RecipeCache @Inject constructor() {
     private val _data = MutableStateFlow(RecipeCacheData())
     val data: StateFlow<RecipeCacheData> = _data
 
-    fun mutate(mutator: (RecipeCacheData) -> RecipeCacheData) {
+    /**
+     * returns original model, to roll back cache updates
+     */
+    fun mutate(mutator: (RecipeCacheData) -> RecipeCacheData): RecipeCacheData {
+        val oldData = _data.value
         _data.value = mutator(_data.value)
+        return oldData
     }
 }
 
